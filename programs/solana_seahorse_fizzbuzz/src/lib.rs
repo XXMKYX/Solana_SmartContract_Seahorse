@@ -131,4 +131,19 @@ mod solana_seahorse_fizzbuzz {
     use super::*;
     use seahorse_util::*;
     use std::collections::HashMap;
+    #[derive(Accounts)]
+    pub struct Huevos<'info> {
+        #[account(mut)]
+        pub payer: Signer<'info>,
+    }
+    pub fn huevos(ctx: Context<Huevos>) -> Result<()> {
+        let mut programs = HashMap::new();
+        let programs_map = ProgramsMap(programs);
+        let payer = SeahorseSigner {
+            account: &ctx.accounts.payer,
+            programs: &programs_map,
+        };
+        huevos_handler(payer.clone());
+        return Ok(());
+    }
 }
